@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List App</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function Header() {
+        return (
+          <header>
+            <h1>구구단</h1>
+          </header>
+        );
+      }
+
+      function Calculator() {
+        const [firstNum, setFirstNum] = React.useState("");
+        const [secondNum, setSecondNum] = React.useState("");
+        const [result, setResult] = React.useState("");
+
+        const multiply = () => {
+          const num1 = parseInt(firstNum);
+          const num2 = parseInt(secondNum);
+
+          if (isNaN(num1) || isNaN(num2)) {
+            setResult("?");
+          } else {
+            setResult(num1 * num2);
+          }
+        };
+
+        const isNumber = (e) => {
+          return /^[0-9]*$/.test(e.target.value);
+        };
+
+        const handleNumChange = (e) => {
+          if (!isNumber(e)) {
+            return;
+          }
+          if (e.target.name === "firstInput") {
+            setFirstNum(e.target.value);
+          } else {
+            setSecondNum(e.target.value);
+          }
+        };
+
+        React.useEffect(() => {
+          multiply();
+        }, [firstNum, secondNum]);
+
+        return (
+          <div>
+            <input
+              value={firstNum}
+              name="firstInput"
+              onChange={handleNumChange}
+            />
+            <span>x</span>
+            <input
+              value={secondNum}
+              name="secondInput"
+              onChange={handleNumChange}
+            />
+            <span>=</span>
+            <span>{result}</span>
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <div>
+            <Header />
+            <Calculator />
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
